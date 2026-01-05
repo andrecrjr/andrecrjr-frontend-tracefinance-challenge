@@ -1,24 +1,192 @@
 @import "tailwindcss";
 
+/* ============================================
+   TRACE FINANCE DESIGN TOKENS
+   ============================================ */
+
 :root {
+  /* ----------------------------------------
+     BASE COLORS
+     ---------------------------------------- */
   --background: #ffffff;
   --foreground: #171717;
+
+  /* ----------------------------------------
+     PRIMARY / ACCENT COLORS
+     ---------------------------------------- */
+  --primary: #00D09C;
+  --primary-hover: #00B888;
+  --primary-light: #E6FAF5;
+  
+  /* ----------------------------------------
+     SIDEBAR THEME
+     ---------------------------------------- */
+  --sidebar-bg: #1A1F1C;
+  --sidebar-text: #FFFFFF;
+  --sidebar-text-muted: #8A9A8F;
+  --sidebar-active-bg: #2A2F2C;
+  --sidebar-hover-bg: #232823;
+  --sidebar-border: #2E3530;
+
+  /* ----------------------------------------
+     CONTENT / SURFACE COLORS
+     ---------------------------------------- */
+  --surface: #FFFFFF;
+  --surface-secondary: #F8F9FA;
+  --surface-hover: #F1F3F5;
+  --border: #E5E7EB;
+  --border-light: #F0F0F0;
+
+  /* ----------------------------------------
+     TEXT COLORS
+     ---------------------------------------- */
+  --text-primary: #171717;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+  --text-disabled: #D1D5DB;
+
+  /* ----------------------------------------
+     STATUS COLORS
+     ---------------------------------------- */
+  /* Completed / Success */
+  --status-completed: #00D09C;
+  --status-completed-bg: #E6FAF5;
+  --status-completed-text: #007A5A;
+
+  /* Pending Approval / Warning */
+  --status-pending: #F5A623;
+  --status-pending-bg: #FEF7E6;
+  --status-pending-text: #B87503;
+
+  /* Failed / Error */
+  --status-failed: #E85C5C;
+  --status-failed-bg: #FEE9E9;
+  --status-failed-text: #C53030;
+
+  /* ----------------------------------------
+     AMOUNT COLORS (Financial)
+     ---------------------------------------- */
+  --amount-positive: #00D09C;
+  --amount-negative: #E85C5C;
+  --amount-neutral: #171717;
+
+  /* ----------------------------------------
+     INTERACTIVE ELEMENTS
+     ---------------------------------------- */
+  --input-bg: #FFFFFF;
+  --input-border: #E5E7EB;
+  --input-border-focus: #00D09C;
+  --input-placeholder: #9CA3AF;
+
+  /* ----------------------------------------
+     BUTTON STYLES
+     ---------------------------------------- */
+  --btn-primary-bg: #00D09C;
+  --btn-primary-text: #FFFFFF;
+  --btn-primary-hover: #00B888;
+  
+  --btn-secondary-bg: #F3F4F6;
+  --btn-secondary-text: #374151;
+  --btn-secondary-hover: #E5E7EB;
+
+  /* ----------------------------------------
+     SHADOWS
+     ---------------------------------------- */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+
+  /* ----------------------------------------
+     BORDER RADIUS
+     ---------------------------------------- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* ----------------------------------------
+     SPACING (for consistency)
+     ---------------------------------------- */
+  --sidebar-width: 256px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    
+    --surface: #1A1A1A;
+    --surface-secondary: #0F0F0F;
+    --surface-hover: #2A2A2A;
+    --border: #2E2E2E;
+    --border-light: #1F1F1F;
+    
+    --text-primary: #EDEDED;
+    --text-secondary: #9CA3AF;
+    --text-muted: #6B7280;
   }
 }
 
+/* ============================================
+   TAILWIND THEME INTEGRATION
+   ============================================ */
+@theme inline {
+  /* Core colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  /* Primary palette */
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  
+  /* Sidebar colors */
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-sidebar-text: var(--sidebar-text);
+  --color-sidebar-muted: var(--sidebar-text-muted);
+  --color-sidebar-active: var(--sidebar-active-bg);
+  --color-sidebar-hover: var(--sidebar-hover-bg);
+  --color-sidebar-border: var(--sidebar-border);
+  
+  /* Surface colors */
+  --color-surface: var(--surface);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  
+  /* Text colors */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  
+  /* Status colors */
+  --color-status-completed: var(--status-completed);
+  --color-status-completed-bg: var(--status-completed-bg);
+  --color-status-pending: var(--status-pending);
+  --color-status-pending-bg: var(--status-pending-bg);
+  --color-status-failed: var(--status-failed);
+  --color-status-failed-bg: var(--status-failed-bg);
+  
+  /* Amount colors */
+  --color-amount-positive: var(--amount-positive);
+  --color-amount-negative: var(--amount-negative);
+  
+  /* Button colors */
+  --color-btn-primary: var(--btn-primary-bg);
+  --color-btn-primary-hover: var(--btn-primary-hover);
+  
+  /* Typography */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
 body {
   background: var(--background);
   color: var(--foreground);
