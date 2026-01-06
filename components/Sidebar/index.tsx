@@ -1,6 +1,6 @@
 export const Sidebar = () =>{
     return (
-        <nav className="max-w-64 bg-sidebar-bg">
+        <nav className="w-full md:max-w-[26%] md:min-h-screen bg-sidebar-bg">
             <h1>Sidebar</h1>
         </nav>
     )
