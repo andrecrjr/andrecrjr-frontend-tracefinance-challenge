@@ -9,13 +9,8 @@ interface StepperItemProps {
 
 export const StepperItem = ({ label, status, isLast }: StepperItemProps) => {
     return (
-        <div className="relative flex gap-4">
-            {!isLast && (
-                <div 
-                    className={`absolute left-[11px] top-6 w-px h-full -mb-4 z-0
-                    ${status === "completed" ? "bg-primary" : "bg-sidebar-border"}`} 
-                />
-            )}
+        <div className={`relative flex gap-4 h-auto after:${isLast ? "hidden" : "absolute"} after:left-[11px] 
+             after:w-px after:h-full after:-mb-4 after:z-0 after:bg-primary`}>
 
             <div className={`relative z-10 w-6 h-6 rounded-full flex items-center justify-center border transition-colors
                 ${status === "active" ? "bg-primary border-primary text-black" : ""}
