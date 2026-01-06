@@ -27,10 +27,12 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased 
-        min-h-screen w-full flex flex-col md:flex-row`}
+        h-screen w-full flex flex-col md:flex-row overflow-hidden`}
       >
         <Sidebar />
-        {children}
+        <main className="min-w-[calc(100vw-var(--sidebar-width))] h-screen overflow-hidden">
+          {children}
+        </main>
       </body>
     </html>
   );
