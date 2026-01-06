@@ -18,7 +18,7 @@ export const StepperItem = ({ label, status, isLast }: StepperItemProps) => {
                 ${status === "pending" ? "bg-transparent border-sidebar-muted" : ""}
             `}>
                 {status === "completed" && <Check className="w-3.5 h-3.5" strokeWidth={3} />}
-                {status === "active" && <div className="w-2 h-2 rounded-full bg-[#1A1F1C]" />}
+                {status === "active" && <div className="w-2 h-2 rounded-full bg-sidebar-bg" />}
             </div>
 
             <div className="pb-8 pt-0.5">
