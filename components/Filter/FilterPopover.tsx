@@ -1,29 +1,29 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronRight, Calendar, ArrowLeftRight, X } from 'lucide-react';
+import { ChevronRight, Calendar, ArrowLeftRight } from 'lucide-react';
 import { TransactionType } from '@/services/api';
-
-
-interface FilterPopoverProps {
-  startDate: string | null;
-  endDate: string | null;
-  type: TransactionType | null;
-  onApply: (filters: { startDate: string | null; endDate: string | null; type: TransactionType | null }) => void;
-  onClear: () => void;
-}
+import { useQueryFilters } from '@/hooks/useQueryFilters';
 
 type Tab = 'DATE' | 'METHOD';
 
-export function FilterPopover({ startDate, endDate, type, onApply, onClear }: FilterPopoverProps) {
+export function FilterPopover() {
+  const {
+      startDate,
+      endDate,
+      typeFilter: type,
+      handleFilterApply,
+      handleFilterClear
+  } = useQueryFilters();
+
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>('DATE');
   const [localStartDate, setLocalStartDate] = useState<string | null>(startDate);
   const [localEndDate, setLocalEndDate] = useState<string | null>(endDate);
-  const [localType, setLocalType] = useState<TransactionType | null>(type);
+  const [localType, setLocalType] = useState<TransactionType | null>(type ? type as TransactionType : null);
 
   const handleApply = () => {
-    onApply({
+    handleFilterApply({
       startDate: localStartDate,
       endDate: localEndDate,
       type: localType,
@@ -35,10 +35,9 @@ export function FilterPopover({ startDate, endDate, type, onApply, onClear }: Fi
     setLocalStartDate(null);
     setLocalEndDate(null);
     setLocalType(null);
-    onClear();
+    handleFilterClear();
     setIsOpen(false);
   };
-
 
   if (!isOpen) {
      return (
@@ -47,10 +46,10 @@ export function FilterPopover({ startDate, endDate, type, onApply, onClear }: Fi
                 onClick={() => {
                     setLocalStartDate(startDate);
                     setLocalEndDate(endDate);
-                    setLocalType(type);
+                    setLocalType(type ? type as TransactionType : null);
                     setIsOpen(true);
                 }}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/80 rounded-lg text-sm font-medium transition-colors"
             >
                 <span>+ Add filter</span>
             </button>
@@ -73,7 +72,7 @@ export function FilterPopover({ startDate, endDate, type, onApply, onClear }: Fi
         <div className="flex items-center gap-2">
             <button 
                 onClick={() => setIsOpen(false)}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/80 rounded-lg text-sm font-medium transition-colors"
             >
                 <span>+ Add filter</span>
             </button>
@@ -93,7 +92,7 @@ export function FilterPopover({ startDate, endDate, type, onApply, onClear }: Fi
 
       <div className="absolute top-12 left-0 z-20 w-[600px] bg-white rounded-xl shadow-xl border border-gray-100 flex overflow-hidden">
         
-        <div className="w-1/3 bg-gray-50 border-r border-gray-100 p-2 space-y-1">
+        <div className="w-1/3 bg-primary border-r border-gray-100 p-2 space-y-1">
           <button
             onClick={() => setActiveTab('DATE')}
             className={`w-full flex items-center justify-between p-3 rounded-lg text-sm font-medium transition-colors ${
