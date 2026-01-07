@@ -40,6 +40,7 @@ export interface FetchTransactionsParams {
   limit?: number;
   search?: string;
   status?: TransactionStatus;
+  type?: TransactionType;
   currency?: Currency;
   startDate?: string;
   endDate?: string;
@@ -51,6 +52,7 @@ export async function fetchTransactions(params?: FetchTransactionsParams): Promi
   if (params?.limit) searchParams.append('limit', params.limit.toString());
   if (params?.search) searchParams.append('search', params.search);
   if (params?.status) searchParams.append('status', params.status);
+  if (params?.type) searchParams.append('type', params.type);
   if (params?.currency) searchParams.append('currency', params.currency);
   if (params?.startDate) searchParams.append('startDate', params.startDate);
   if (params?.endDate) searchParams.append('endDate', params.endDate);
