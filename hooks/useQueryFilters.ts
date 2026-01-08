@@ -8,16 +8,20 @@ export function useQueryFilters() {
   const [startDate, setStartDate] = useQueryState('startDate', { defaultValue: '' });
   const [endDate, setEndDate] = useQueryState('endDate', { defaultValue: '' });
 
-  const handleFilterApply = (filters: { startDate: string | null; endDate: string | null; type: TransactionType | null }) => {
+  const [currency, setCurrency] = useQueryState('currency', { defaultValue: '' });
+
+  const handleFilterApply = (filters: { startDate: string | null; endDate: string | null; type: TransactionType | null; currency: string | null }) => {
     setStartDate(filters.startDate);
     setEndDate(filters.endDate);
-    setTypeFilter(filters.type || '');
+    setTypeFilter(filters.type || null);
+    setCurrency(filters.currency || null);
   };
 
   const handleFilterClear = () => {
     setStartDate(null);
     setEndDate(null);
     setTypeFilter(null);
+    setCurrency(null);
   };
 
   return {
@@ -28,6 +32,7 @@ export function useQueryFilters() {
     typeFilter,
     startDate,
     endDate,
+    currency,
     handleFilterApply,
     handleFilterClear,
   };

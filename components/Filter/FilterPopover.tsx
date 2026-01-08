@@ -1,17 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronRight, Calendar, ArrowLeftRight } from 'lucide-react';
+import { ChevronRight, Calendar, ArrowLeftRight, Banknote } from 'lucide-react';
 import { TransactionType } from '@/services/api';
 import { useQueryFilters } from '@/hooks/useQueryFilters';
 
-type Tab = 'DATE' | 'METHOD';
+type Tab = 'DATE' | 'METHOD' | 'CURRENCY';
 
 export function FilterPopover() {
   const {
       startDate,
       endDate,
       typeFilter: type,
+      currency,
       handleFilterApply,
       handleFilterClear
   } = useQueryFilters();
@@ -21,12 +22,14 @@ export function FilterPopover() {
   const [localStartDate, setLocalStartDate] = useState<string | null>(startDate);
   const [localEndDate, setLocalEndDate] = useState<string | null>(endDate);
   const [localType, setLocalType] = useState<TransactionType | null>(type ? type as TransactionType : null);
+  const [localCurrency, setLocalCurrency] = useState<string | null>(currency);
 
   const handleApply = () => {
     handleFilterApply({
       startDate: localStartDate,
       endDate: localEndDate,
       type: localType,
+      currency: localCurrency,
     });
     setIsOpen(false);
   };
@@ -35,6 +38,7 @@ export function FilterPopover() {
     setLocalStartDate(null);
     setLocalEndDate(null);
     setLocalType(null);
+    setLocalCurrency(null);
     handleFilterClear();
     setIsOpen(false);
   };
@@ -47,6 +51,7 @@ export function FilterPopover() {
                     setLocalStartDate(startDate);
                     setLocalEndDate(endDate);
                     setLocalType(type ? type as TransactionType : null);
+                    setLocalCurrency(currency);
                     setIsOpen(true);
                 }}
                 className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/80 rounded-lg text-sm font-medium transition-colors"
@@ -58,9 +63,14 @@ export function FilterPopover() {
                     Date: {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
                 </span>
             )}
-             {type && (
+            {type && (
                 <span className="text-gray-500 font-normal text-sm border-l pl-2 border-gray-300">
                     Type: {type}
+                </span>
+            )}
+            {currency && (
+                <span className="text-gray-500 font-normal text-sm border-l pl-2 border-gray-300">
+                    Currency: {currency}
                 </span>
             )}
         </div>
@@ -118,6 +128,19 @@ export function FilterPopover() {
             </div>
             <ChevronRight className="w-4 h-4 text-gray-400" />
           </button>
+
+          <button
+            onClick={() => setActiveTab('CURRENCY')}
+            className={`w-full flex items-center justify-between p-3 rounded-lg text-sm font-medium transition-colors ${
+              activeTab === 'CURRENCY' ? 'bg-gray-200 text-gray-900' : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Banknote className="w-4 h-4" />
+              <span>Currency</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-gray-400" />
+          </button>
         </div>
 
         <div className="w-2/3 p-6 flex flex-col justify-between">
@@ -165,6 +188,25 @@ export function FilterPopover() {
                                 />
                                 <span className="text-sm text-gray-700">TED</span>
                             </label>
+                         </div>
+                    </div>
+                )}
+
+                {activeTab === 'CURRENCY' && (
+                    <div className="space-y-4">
+                         <h3 className="text-sm font-medium text-gray-500">Select currency</h3>
+                         <div className="space-y-2">
+                            {['BRL', 'USD', 'EUR'].map((curr) => (
+                                <label key={curr} className="flex items-center gap-2 cursor-pointer">
+                                    <input 
+                                        type="checkbox" 
+                                        checked={localCurrency === curr}
+                                        onChange={(e) => setLocalCurrency(e.target.checked ? curr : null)}
+                                        className="rounded border-gray-300 text-[#00DDA3] focus:ring-[#00DDA3]"
+                                    />
+                                    <span className="text-sm text-gray-700">{curr}</span>
+                                </label>
+                            ))}
                          </div>
                     </div>
                 )}

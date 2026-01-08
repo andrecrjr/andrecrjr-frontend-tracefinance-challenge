@@ -3,7 +3,7 @@
 import { TransactionFilter } from '@/components/TransactionFilter';
 import { TransactionTable } from '@/components/TransactionTable';
 import { useTransactions } from '@/hooks/useTransactions';
-import { TransactionStatus, TransactionType } from '@/services/api';
+import { TransactionStatus, TransactionType, Currency } from '@/services/api';
 import { FilterPopover } from '@/components/Filter/FilterPopover';
 import { useQueryFilters } from '@/hooks/useQueryFilters';
 import { useEffect, useMemo, useRef } from 'react';
@@ -17,6 +17,7 @@ export const Content = () => {
     typeFilter,
     startDate,
     endDate,
+    currency,
   } = useQueryFilters();
 
   const { 
@@ -29,6 +30,7 @@ export const Content = () => {
     search: searchTerm,
     status: statusFilter === 'ALL' ? undefined : (statusFilter as TransactionStatus),
     type: typeFilter ? (typeFilter as TransactionType) : undefined,
+    currency: currency ? (currency as Currency) : undefined,
     startDate: startDate || undefined,
     endDate: endDate || undefined,
   });

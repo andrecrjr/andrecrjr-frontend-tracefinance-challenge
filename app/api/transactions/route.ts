@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const externalApiUrl = `https://fe-challenge-trace-api-production.up.railway.app/api/transactions?${searchParams.toString()}`;
+  const externalApiUrl = `${process.env.INTERN_API}/api/transactions?${searchParams.toString()}`;
 
   try {
     const response = await fetch(externalApiUrl, {
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const externalApiUrl = 'https://fe-challenge-trace-api-production.up.railway.app/api/transactions';
+  const externalApiUrl = `${process.env.INTERN_API}/api/transactions`;
 
   try {
     const body = await request.json();
