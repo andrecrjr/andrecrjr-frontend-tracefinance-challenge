@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <Providers>
           <Sidebar />
-          <main className="min-w-[calc(100vw-var(--sidebar-width))] h-screen overflow-hidden">
+          <main className="min-w-[calc(100vw-var(--sidebar-width))] h-screen overflow-hiddenW">
             {children}
           </main>
         </Providers>

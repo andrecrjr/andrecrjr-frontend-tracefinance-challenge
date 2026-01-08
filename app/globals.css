@@ -117,13 +117,13 @@
     
     --surface: #1A1A1A;
     --surface-secondary: #0F0F0F;
-    --surface-hover: #2A2A2A;
+    --surface-hover: #222222; 
     --border: #2E2E2E;
     --border-light: #1F1F1F;
     
-    --text-primary: #EDEDED;
-    --text-secondary: #9CA3AF;
-    --text-muted: #6B7280;
+    --text-primary: #FFFFFF; 
+    --text-secondary: #A3A3A3; 
+    --text-muted: #737373;
   }
 }
 
