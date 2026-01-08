@@ -30,6 +30,10 @@ export default function TransactionPage() {
     router.push('/');
   };
 
+  useEffect(()=>{
+    prevStep()
+  }, [])
+
   useEffect(() => {
     if (isSuccess) {
       router.push('/');
