@@ -6,6 +6,7 @@ import { useTransactions } from '@/hooks/useTransactions';
 import { TransactionStatus, TransactionType } from '@/services/api';
 import { FilterPopover } from '@/components/Filter/FilterPopover';
 import { useQueryFilters } from '@/hooks/useQueryFilters';
+import { useEffect, useMemo, useRef } from 'react';
 
 export const Content = () => {
   const {
@@ -18,13 +19,45 @@ export const Content = () => {
     endDate,
   } = useQueryFilters();
 
-  const { data, isLoading } = useTransactions({
+  const { 
+    data, 
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  } = useTransactions({
     search: searchTerm,
     status: statusFilter === 'ALL' ? undefined : (statusFilter as TransactionStatus),
     type: typeFilter ? (typeFilter as TransactionType) : undefined,
     startDate: startDate || undefined,
     endDate: endDate || undefined,
   });
+
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const transactions = useMemo(() => {
+    return data?.pages.flatMap((page) => page.data) || [];
+  }, [data]);
+
+  const totalResults = data?.pages[0]?.meta.total || 0;
+  const currentCount = transactions.length;
 
   return (
     <div className="h-full flex flex-col bg-gray-50">
@@ -35,10 +68,13 @@ export const Content = () => {
              <FilterPopover />
            </div>
         </div>
-        <div className="self-start">
+        <div className="flex flex-col justify-between h-full">
            <button className="bg-[#00DDA3] hover:bg-[#00c490] text-black px-4 py-2 rounded-lg text-sm font-medium transition-colors">
             New transaction
           </button>
+        <span className='mt-auto items-end text-gray-500 text-end'>
+          {currentCount > 0 ? 1 : 0}-{currentCount} of {totalResults}
+        </span>
         </div>
       </header>
       
@@ -53,13 +89,15 @@ export const Content = () => {
           
           <div className="mt-6">
             <TransactionTable 
-              transactions={data?.data || []} 
+              transactions={transactions} 
               isLoading={isLoading} 
             />
           </div>
           
+           <div ref={loadMoreRef} className="h-4 w-full" />
+
            <div className="flex justify-between items-center mt-4 text-sm text-gray-500">
-             <span>{(data?.data || []).length} results</span>
+             {isFetchingNextPage && <span>Loading more...</span>}
            </div>
         </div>
       </div>
