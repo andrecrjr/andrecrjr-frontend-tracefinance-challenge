@@ -24,3 +24,6 @@ pnpm test
 # or
 bun test
 ```
+
+Environment Variables:
+INTERN_API="https://fe-challenge-trace-api-production.up.railway.app"
