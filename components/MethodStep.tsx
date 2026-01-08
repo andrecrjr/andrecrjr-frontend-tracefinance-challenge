@@ -23,7 +23,7 @@ export function MethodStep({ form, onNext, onCancel }: MethodStepProps) {
         <label
           className={`flex items-center gap-4 p-5 rounded-lg border cursor-pointer transition-colors
             ${selectedType === 'TED' 
-              ? 'border-primary bg-primary-light' 
+              ? 'border-primary' 
               : 'border-border bg-surface hover:bg-surface-hover'
             }`}
         >
@@ -39,7 +39,7 @@ export function MethodStep({ form, onNext, onCancel }: MethodStepProps) {
         <label
           className={`flex items-center gap-4 p-5 rounded-lg border cursor-pointer transition-colors
             ${selectedType === 'PIX' 
-              ? 'border-primary bg-primary-light' 
+              ? 'border-primary' 
               : 'border-border bg-surface hover:bg-surface-hover'
             }`}
         >

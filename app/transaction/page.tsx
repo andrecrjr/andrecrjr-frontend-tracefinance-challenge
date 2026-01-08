@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { X } from 'lucide-react';
 import { useTransactionForm } from '@/hooks/useTransactionForm';
-import { MethodStep } from '@/components/Transaction/MethodStep';
-import { InformationStep } from '@/components/Transaction/InformationStep';
+import { MethodStep } from '@/components/MethodStep';
+import { InformationStep } from '@/components/InformationStep';
 
 export default function TransactionPage() {
   const router = useRouter();
