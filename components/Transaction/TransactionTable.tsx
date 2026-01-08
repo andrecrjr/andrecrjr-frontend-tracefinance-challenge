@@ -1,5 +1,5 @@
 import { Transaction } from '@/services/api';
-import { StatusBadge } from './StatusBadge';
+import { StatusBadge } from '../StatusBadge';
 
 interface TransactionTableProps {
   transactions: Transaction[];

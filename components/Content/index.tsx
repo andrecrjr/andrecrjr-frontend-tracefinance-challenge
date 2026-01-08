@@ -1,7 +1,7 @@
 'use client';
 
-import { TransactionFilter } from '@/components/TransactionFilter';
-import { TransactionTable } from '@/components/TransactionTable';
+import { TransactionFilter } from '@/components/Transaction/TransactionFilter';
+import { TransactionTable } from '@/components/Transaction/TransactionTable';
 import { useTransactions } from '@/hooks/useTransactions';
 import { TransactionStatus, TransactionType, Currency } from '@/services/api';
 import { FilterPopover } from '@/components/Filter/FilterPopover';
