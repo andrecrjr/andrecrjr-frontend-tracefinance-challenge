@@ -9,7 +9,7 @@ export const DefaultSidebar = () => {
             <SidebarLogo />
 
             <div className="flex-1 flex flex-col gap-2 py-4">
-                <Link href="/transaction">
+                <Link href="/">
                     <NavigationItem label="Transactions" isActive={true} />
                 </Link>
             </div>
