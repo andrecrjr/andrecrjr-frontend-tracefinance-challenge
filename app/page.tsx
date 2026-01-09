@@ -1,7 +1,12 @@
 import { Content } from "@/components/Content";
+import { Suspense } from "react";
+
+import { LoadingPage } from "@/components/LoadingPage";
 
 export default function Home() {
   return (
-    <Content />
+    <Suspense fallback={<LoadingPage />}>
+      <Content />
+    </Suspense>
   );
 }
