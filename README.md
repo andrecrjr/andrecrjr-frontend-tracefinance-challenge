@@ -27,3 +27,8 @@ bun test
 
 Environment Variables:
 INTERN_API="https://fe-challenge-trace-api-production.up.railway.app"
+
+
+# Troubleshooting
+
+* Type filter was not working, when I filtered with TED or PIX it was not filtering the transactions with the type.
