@@ -32,7 +32,7 @@ export default function TransactionPage() {
 
   useEffect(()=>{
     prevStep()
-  }, [])
+  }, [prevStep])
 
   useEffect(() => {
     if (isSuccess) {
@@ -66,6 +66,7 @@ export default function TransactionPage() {
             onBack={prevStep}
             onSubmit={submitTransaction}
             isSubmitting={isSubmitting}
+            transactionType={methodForm.getValues('type')}
           />
         )}
       </div>

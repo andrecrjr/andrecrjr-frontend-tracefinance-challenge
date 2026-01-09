@@ -8,6 +8,7 @@ interface InformationStepProps {
   onBack: () => void;
   onSubmit: () => void;
   isSubmitting: boolean;
+  transactionType: 'TED' | 'PIX';
 }
 
 interface FormInputProps {
@@ -37,7 +38,7 @@ function FormField({ label, error, required, children, hasValue }: FormInputProp
   );
 }
 
-export function InformationStep({ form, onBack, onSubmit, isSubmitting }: InformationStepProps) {
+export function InformationStep({ form, onBack, onSubmit, isSubmitting, transactionType }: InformationStepProps) {
   const { register, formState: { errors, isValid }, setValue, watch } = form;
 
   const inputBaseClass = `peer w-full px-4 py-4 pt-4 pb-4 border rounded-lg bg-surface text-text-primary
@@ -64,7 +65,7 @@ export function InformationStep({ form, onBack, onSubmit, isSubmitting }: Inform
               />
             </FormField>
 
-            <FormField label="Tax ID" required error={errors.cpfCnpj?.message}>
+            <FormField label="Tax ID / CPF / CNPJ" required error={errors.cpfCnpj?.message}>
               <input
                 type="text"
                 {...register('cpfCnpj')}
@@ -83,6 +84,50 @@ export function InformationStep({ form, onBack, onSubmit, isSubmitting }: Inform
             </FormField>
         </div>
 
+        {transactionType === 'PIX' && (
+          <div>
+            <h2 className="text-sm font-medium text-text-primary mb-4">
+              Pix details
+            </h2>
+            <div className="flex flex-col gap-4">
+              <FormField 
+                label="Key type" 
+                required 
+                error={errors.keyType?.message}
+                hasValue={!!watch('keyType')}
+              >
+                <select
+                  {...register('keyType')}
+                  className={`${inputBaseClass} ${errors.keyType ? 'border-status-failed' : 'border-border'} appearance-none cursor-pointer`}
+                  defaultValue=""
+                >
+                  <option value="" disabled></option>
+                  <option value="CPF">CPF</option>
+                  <option value="CNPJ">CNPJ</option>
+                  <option value="EMAIL">Email</option>
+                  <option value="PHONE">Phone</option>
+                  <option value="RANDOM">Random key</option>
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                    <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+              </FormField>
+
+              <FormField label="Pix key" required error={errors.pixKey?.message}>
+                <input
+                  type="text"
+                  {...register('pixKey')}
+                  className={`${inputBaseClass} ${errors.pixKey ? 'border-status-failed' : 'border-border'}`}
+                  placeholder="Pix key"
+                />
+              </FormField>
+            </div>
+          </div>
+        )}
+
+        {transactionType === 'TED' && (
         <div>
           <h2 className="text-sm font-medium text-text-primary mb-4">
             Bank details
@@ -138,6 +183,7 @@ export function InformationStep({ form, onBack, onSubmit, isSubmitting }: Inform
             </FormField>
           </div>
         </div>
+        )}
 
         <div>
           <h2 className="text-sm font-medium text-text-primary mb-2">

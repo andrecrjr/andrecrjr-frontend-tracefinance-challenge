@@ -8,16 +8,19 @@ export const methodSchema = z.object({
 
 export type MethodFormData = z.infer<typeof methodSchema>;
 
-export const transactionInfoSchema = z.object({
+const baseTransactionSchema = z.object({
   amount: z
     .number({ error: 'Amount is required' })
     .positive('Amount must be positive'),
   cpfCnpj: z
-    .string({ error: 'Tax ID is required' })
-    .min(11, 'Tax ID must be at least 11 characters'),
+    .string({ error: 'Tax ID / CPF / CNPJ is required' }),
   legalName: z
     .string({ error: 'Legal name is required' })
     .min(1, 'Legal name is required'),
+  description: z.string().optional(),
+});
+
+export const tedSchema = baseTransactionSchema.extend({
   accountType: z.enum(['CORRENTE', 'POUPANCA'], {
     error: 'Account type is required',
   }),
@@ -30,8 +33,28 @@ export const transactionInfoSchema = z.object({
   agency: z
     .string({ error: 'Branch is required' })
     .min(1, 'Branch is required'),
-  description: z.string().optional(),
+  pixKey: z.string().optional(),
+  keyType: z.enum(['EMAIL', 'PHONE', 'CPF', 'CNPJ', 'RANDOM']).optional(),
 });
+
+export const pixSchema = baseTransactionSchema.extend({
+  pixKey: z.string({ error: 'Pix key is required' }).min(1, 'Pix key is required'),
+  keyType: z.enum(['EMAIL', 'PHONE', 'CPF', 'CNPJ', 'RANDOM'], { error: 'Key type is required' }),
+  accountType: z.enum(['CORRENTE', 'POUPANCA']).optional(),
+  bank: z.string().optional(),
+  account: z.string().optional(),
+  agency: z.string().optional(),
+});
+
+export const transactionInfoSchema = baseTransactionSchema.extend({
+    accountType: z.enum(['CORRENTE', 'POUPANCA']).optional(),
+    bank: z.string().optional(),
+    account: z.string().optional(),
+    agency: z.string().optional(),
+    pixKey: z.string().optional(),
+    keyType: z.enum(['EMAIL', 'PHONE', 'CPF', 'CNPJ', 'RANDOM']).optional(),
+});
+
 
 export type TransactionInfoFormData = z.infer<typeof transactionInfoSchema>;
 

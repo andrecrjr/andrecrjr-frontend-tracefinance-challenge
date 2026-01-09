@@ -12,8 +12,9 @@ export async function GET(request: NextRequest) {
     });
 
     if (!response.ok) {
+      const error = await response.json()
        return NextResponse.json(
-        { error: `API Error: ${response.statusText}` },
+        { error: `API Error: ${response.statusText} ${error.message}` },
         { status: response.status }
       );
     }
@@ -44,8 +45,9 @@ export async function POST(request: NextRequest) {
     });
 
     if (!response.ok) {
+      const error = await response.json()
        return NextResponse.json(
-        { error: `API Error: ${response.statusText}` },
+        error,
         { status: response.status }
       );
     }

@@ -13,6 +13,7 @@ export interface Transaction {
   status: TransactionStatus;
   createdAt: string;
   cpfCnpj: string;
+  legalName?: string;
   pixKey?: string;
   keyType?: PixKeyType;
   bank?: string;
@@ -79,7 +80,10 @@ export async function createTransaction(data: CreateTransactionDTO): Promise<Tra
   });
 
   if (!response.ok) {
-    throw new Error('Failed to create transaction');
+    const errorData = await response.json().catch(() => ({}));
+    const error = new Error('Failed to create transaction');
+    (error as any).response = { data: errorData };
+    throw error;
   }
 
   const responseData = (await response.json()) as unknown;

@@ -6,8 +6,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   methodSchema,
   transactionInfoSchema,
+  pixSchema,
+  tedSchema,
   MethodFormData,
   TransactionInfoFormData,
+  
 } from '@/lib/schemas/transactionSchema';
 import { createTransaction, CreateTransactionDTO } from '@/services/api';
 import { useMutation } from '@tanstack/react-query';
@@ -38,8 +41,11 @@ export function useTransactionForm(): UseTransactionFormReturn {
     },
   });
 
+  const type = methodForm.watch('type');
+  const infoFormSchema = type === 'PIX' ? pixSchema : (type === 'TED' ? tedSchema : transactionInfoSchema);
+
   const infoForm = useForm<TransactionInfoFormData>({
-    resolver: zodResolver(transactionInfoSchema),
+    resolver: zodResolver(infoFormSchema),
     defaultValues: {
       amount: undefined,
       cpfCnpj: '',
@@ -81,14 +87,35 @@ export function useTransactionForm(): UseTransactionFormReturn {
         type: methodData.type,
         amount: infoData.amount,
         cpfCnpj: infoData.cpfCnpj,
+        legalName: infoData.legalName,
         description: infoData.description,
-        bank: infoData.bank,
-        account: infoData.account,
-        agency: infoData.agency,
-        accountType: infoData.accountType,
+        ...(methodData.type === 'TED' ? {
+          bank: infoData.bank,
+          account: infoData.account,
+          agency: infoData.agency,
+          accountType: infoData.accountType,
+        } : {}),
+        ...(methodData.type === 'PIX' ? {
+          pixKey: infoData.pixKey,
+          keyType: infoData.keyType,
+        } : {}),
       };
 
-      mutation.mutate(payload);
+      mutation.mutate(payload, {
+        onError: (error: unknown) => {
+          const apiError = error as { response?: { data?: { errors?: Array<{ field: string; message: string }> } } };
+          if (apiError.response?.data?.errors) {
+            apiError.response.data.errors.forEach((err) => {
+              if (err.field) {
+                 infoForm.setError(err.field as keyof TransactionInfoFormData, { 
+                   type: 'manual', 
+                   message: err.message 
+                 });
+              }
+            });
+          }
+        }
+      });
     })();
   }, [infoForm, methodForm, mutation]);
 
